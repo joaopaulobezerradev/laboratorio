@@ -1,0 +1,62 @@
+# a imagem é carregada do arquivo “example.jpg” e redimensionada para o tamanho do label. 
+Em seguida, a imagem é convertida para o formato do tkinter e exibida em um label dentro do frame. 
+Note que o tamanho do label é obtido usando o método winfo_width() e winfo_height() do tkinter.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Para fazer com que cada botão do frame acima acesse uma tela específica e abra dentro da column=1, é 
+necessário criar as telas em uma função separada e então chamar essa função dentro do command de cada botão. 
+No exemplo abaixo, será criada uma função chamada abrir_tela que recebe um parâmetro identificando qual botão 
+foi clicado e, com base nesse parâmetro, abre a tela correspondente.
+Observe que a função abrir_tela cria uma label com as informações correspondentes à tela clicada e adiciona um botão para fechar essa label. Além disso, o parâmetro num_tela é utilizado para indicar qual tela deve ser aberta.
+
+No laço de repetição que cria os botões, o command de cada botão chama a função abrir_tela passando o índice i 
+como parâmetro. Dessa forma, cada botão acessará uma tela específica quando clicado e essa tela será aberta 
+dentro da column=1.
+
+import tkinter as tk
+# Função para abrir as telas
+def abrir_tela(num_tela):
+    # Criar tela correspondente ao botão clicado
+    if num_tela == 1:
+        tela = tk.Label(master=frame3, text="Tela 1", bg="red", width=120, height=35)
+        tela.grid(row=0, column=1, padx=3, pady=(0, 3))
+    elif num_tela == 2:
+        tela = tk.Label(master=frame3, text="Tela 2", bg="blue", width=120, height=35)
+        tela.grid(row=0, column=1, padx=3, pady=(0, 3))
+    elif num_tela == 3:
+        tela = tk.Label(master=frame3, text="Tela 3", bg="purple", width=120, height=35)
+        tela.grid(row=0, column=1, padx=3, pady=(0, 3))
+    # Adicionar botão para fechar a tela
+    botao_fechar = tk.Button(master=tela, text="Fechar", command=tela.destroy)
+    botao_fechar.pack()
+
+# Criar janela principal
+root = tk.Tk()
+
+# Criar frame3
+frame3 = tk.Frame(master=root, height=725, bg="white")
+frame3.pack(fill=tk.X)
+
+# Dividir o frame3 em duas colunas
+frame3.columnconfigure(0, weight=1)
+frame3.columnconfigure(1, weight=1)
+
+# Adicionar widgets para cada coluna
+frame_botoes = tk.Frame(master=frame3)
+frame_botoes.grid(row=0, column=0, padx=3, pady=(0, 3), sticky="n")
+
+botoes = []
+for i in range(1, 4):
+    # Adicionar as configurações do botão
+    botao = tk.Button(master=frame_botoes, text="Botão " + str(i), bg="pink", width=22, height=2, command=lambda i=i: abrir_tela(i))
+    botoes.append(botao)
+
+for i, botao in enumerate(botoes):
+    botao.grid(row=i, column=0, padx=3, pady=3)
+
+label2 = tk.Label(master=frame3, text="Coluna 2", bg="green", width=120, height=35)
+label2.grid(row=0, column=1, padx=3, pady=(0, 3))
+
+# Iniciar loop da janela principal
+root.mainloop()
